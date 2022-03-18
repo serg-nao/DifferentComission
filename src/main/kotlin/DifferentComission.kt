@@ -21,7 +21,7 @@ fun makeTransfer(transfer: UInt, monthSum: UInt, cardType: String) {
     }
 }
 
-fun calculatorMir(transfer: UInt): Any {
+fun calculatorMir(transfer: UInt): UInt {
     val minComission = 35_00U
     return if ((transfer * 75U / 10000U).toUInt() >= minComission) ((transfer * 75U / 10000U).toUInt()) else minComission
 }
@@ -54,7 +54,9 @@ fun calculatorMastercard(transfer: UInt, monthSum: UInt): UInt {
 }
 
 fun checkLimit(transfer: UInt, monthSum: UInt, cardType: String): Boolean {
-    val limit: UInt = if (cardType == "VK") 40_000_00U else 600_000_00U
+    val limitVK = 40_000_00U
+    val limitCards = 600_000_00U
+    val limit: UInt = if (cardType == "VK") limitVK else limitCards
     val checkResult: Boolean = when {
         (monthSum >= limit) -> {
             println("Лимит переводов на текущий месяц исчерпан.")

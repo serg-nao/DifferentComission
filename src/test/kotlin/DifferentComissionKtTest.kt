@@ -80,7 +80,7 @@ class DifferentComissionKtTest {
         )
 
         //assert
-        assertEquals(76_00U, comission)
+        assertEquals(75_00U, comission)
     }
 
     @Test

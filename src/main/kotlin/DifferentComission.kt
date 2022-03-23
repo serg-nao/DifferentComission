@@ -8,8 +8,8 @@ fun main() {
     makeTransfer(transfer, monthSum, cardType)
 }
 
-fun makeTransfer(transfer: UInt, monthSum: UInt, cardType: String) {
-    if (checkLimit(transfer, monthSum, cardType)) {
+fun makeTransfer(transfer: UInt, monthSum: UInt, cardType: String): String {
+    val textResult = if (checkLimit(transfer, monthSum, cardType)) {
         val taxAmount = when (cardType) {
             "Mastercard" -> calculatorMastercard(transfer, monthSum)
             "Maestro" -> calculatorMaestro(transfer, monthSum)
@@ -17,8 +17,9 @@ fun makeTransfer(transfer: UInt, monthSum: UInt, cardType: String) {
             "Мир" -> calculatorMir(transfer)
             else -> 0U
         }
-        println("Комиссия составила $taxAmount")
-    }
+        "Платеж проведен. Комиссия составила $taxAmount"
+    } else "Платеж не прошел."
+    return textResult
 }
 
 fun calculatorMir(transfer: UInt): UInt {
@@ -36,8 +37,8 @@ fun calculatorMaestro(transfer: UInt, monthSum: UInt): UInt {
     val maxFreeMonthSum = 75_000_00U
     val comission: UInt = when {
         (transfer > minTransfer) && (transfer + monthSum < maxFreeMonthSum) -> 0U
-        (transfer <= minTransfer) || (monthSum >= maxFreeMonthSum) -> (transfer * 6U / 1000U).toUInt() + 20_00U
-        else -> ((transfer + monthSum - maxFreeMonthSum) * 6U / 1000U) + 2000U
+        (transfer <= minTransfer) || (monthSum >= maxFreeMonthSum) -> (transfer * 6U / 1_000U).toUInt() + 20_00U
+        else -> ((transfer + monthSum - maxFreeMonthSum) * 6U / 1_000U) + 20_00U
     }
     return comission
 }
@@ -47,8 +48,8 @@ fun calculatorMastercard(transfer: UInt, monthSum: UInt): UInt {
     val maxFreeMonthSum = 75_000_00U
     val comission: UInt = when {
         (transfer > minTransfer) && (transfer + monthSum < maxFreeMonthSum) -> 0U
-        (transfer <= minTransfer) || (monthSum >= maxFreeMonthSum) -> (transfer * 6U / 1000U).toUInt() + 20_00U
-        else -> ((transfer + monthSum - maxFreeMonthSum) * 6U / 1000U) + 2000U
+        (transfer <= minTransfer) || (monthSum >= maxFreeMonthSum) -> (transfer * 6U / 1_000U).toUInt() + 20_00U
+        else -> ((transfer + monthSum - maxFreeMonthSum) * 6U / 1_000U) + 20_00U
     }
     return comission
 }
@@ -59,15 +60,15 @@ fun checkLimit(transfer: UInt, monthSum: UInt, cardType: String): Boolean {
     val limit: UInt = if (cardType == "VK") limitVK else limitCards
     val checkResult: Boolean = when {
         (monthSum >= limit) -> {
-            println("Лимит переводов на текущий месяц исчерпан.")
+            //println("Лимит переводов на текущий месяц исчерпан.")
             false
         }
         (monthSum + transfer > limit) -> {
-            println("Сумма перевода превышает лимит, попробуйте уменьшить сумму перевода.")
+            //println("Сумма перевода превышает лимит, попробуйте уменьшить сумму перевода.")
             false
         }
         else -> {
-            print("Перевод проведен. ")
+            //print("Перевод проведен. ")
             true
         }
     }
